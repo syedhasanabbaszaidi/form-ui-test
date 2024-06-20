@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <link rel='stylesheet' href='dist/bootstrap.min.css'>
+    <link rel='stylesheet' href='dist/formio.full.css'>
+    <script src='dist/formio.full.js'></script>
+    <script type='text/javascript'>
+      window.onload = function() {
+        Formio.builder(document.getElementById('builder'), {}, {});
+      };
+    </script>
+  </head>
+  <body>
+    <div id='builder'></div>
+  </body>
+</html>
+
+
+<button id="openRenderer">Open Form Renderer</button>
+<div id="formio"></div>
+<script src="page1.js"></script>
