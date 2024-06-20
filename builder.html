@@ -1,23 +1,58 @@
 <!DOCTYPE html>
-
-
 <html>
-  <head>
-    <link rel='stylesheet' href='dist/bootstrap.min.css'>
-    <link rel='stylesheet' href='dist/formio.full.css'>
-    <script src='dist/formio.full.js'></script>
-    <script type='text/javascript'>
-      window.onload = function() {
-        Formio.builder(document.getElementById('builder'), {}, {});
-      };
-    </script>
-  </head>
-  <body>
-    <div id='builder'></div>
-  </body>
+<head>
+  <link rel='stylesheet' href='dist/bootstrap.min.css'>
+  <link rel='stylesheet' href='dist/formio.full.css'>
+  <script src='dist/formio.full.js'></script>
+  <script src='page2.js'></script> <!-- Include page2.js for form builder functionality -->
+  <style>
+    body {
+      margin: 20px;
+    }
+    #builder {
+      margin-bottom: 50px;
+      height: 500px; /* Increase the height here */
+    }
+    #jsonForm {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #formio {
+      margin-top: 20px;
+    }
+  </style>
+  <script type='text/javascript'>
+    window.onload = async function() {
+      const builder = await Formio.builder(document.getElementById('builder'), {}, {})
+      const formArea = document.getElementById('jsonForm');
+      const renderBtn = document.getElementById('renderBtn');
+
+      // Event listener for the 'Render Form' button
+      renderBtn.addEventListener('click', () => {
+        const jsonForm = builder.schema;
+        formArea.value = JSON.stringify(jsonForm, null, 2);
+        Formio.createForm(document.getElementById('formio'), jsonForm).then(form => {
+          console.log('Form rendered successfully:', form);
+        }).catch(error => {
+          console.error('Error rendering form:', error);
+        });
+      });
+
+      // Listen for changes in the builder and update the textarea
+      builder.on('change', () => {
+        const jsonForm = builder.schema;
+        formArea.value = JSON.stringify(jsonForm, null, 2);
+      });
+    };
+  </script>
+</head>
+<body>
+  <div id='builder'></div>
+  
+  <div>
+    <textarea id='jsonForm' rows='10' cols='50'></textarea>
+  </div>
+  <button id='renderBtn'>Render Form</button>
+  <div id='formio'></div>
+</body>
 </html>
-
-
-<button id="openRenderer">Open Form Renderer</button>
-<div id="formio"></div>
-<script src="page1.js"></script>
